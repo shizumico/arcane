@@ -24,16 +24,12 @@ type SaveResponse struct {
 	Error string `json:"error,omitempty"`
 }
 
-type Username string
-
 type ListUsernamesResponse struct {
-	Error     string     `json:"error,omitempty"`
-	Usernames []Username `json:"usernames,omitempty"`
+	Error     string   `json:"error,omitempty"`
+	Usernames []string `json:"usernames,omitempty"`
 }
 
-type Service string
-
 type ListServicesResponse struct {
-	Error    string    `json:"error,omitempty"`
-	Services []Service `json:"services,omitempty"`
+	Error    string   `json:"error,omitempty"`
+	Services []string `json:"services,omitempty"`
 }
