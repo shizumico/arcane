@@ -2,14 +2,14 @@ package secrets
 
 import (
 	"encoding/json"
-	errorsPkg "errors"
+	"errors"
 
 	"github.com/gofiber/fiber/v3"
 	"github.com/shizumico/arcane/cmd/api/internal/adapters/http/middleware"
 	"github.com/shizumico/arcane/cmd/api/internal/adapters/http/secrets/dto"
 	"github.com/shizumico/arcane/cmd/api/internal/core/application/challenges"
 	"github.com/shizumico/arcane/cmd/api/internal/core/application/secrets"
-	"github.com/shizumico/arcane/cmd/api/pkg/errors"
+	errorsPkg "github.com/shizumico/arcane/cmd/api/pkg/errors"
 )
 
 type CommandHandlers struct {
@@ -59,11 +59,11 @@ func (h *CommandHandlers) Save(c fiber.Ctx) error {
 
 func (h *CommandHandlers) mapErrorToStatusCode(err error) (int, string) {
 	switch {
-	case errorsPkg.Is(err, errors.ErrInvalidPubkeyFormat):
+	case errors.Is(err, errorsPkg.ErrInvalidPubkeyFormat):
 		return fiber.StatusBadRequest, err.Error()
-	case errorsPkg.Is(err, errors.ErrInvalidSignatureFormat):
+	case errors.Is(err, errorsPkg.ErrInvalidSignatureFormat):
 		return fiber.StatusBadRequest, err.Error()
-	case errorsPkg.Is(err, errors.ErrInvalidSignature):
+	case errors.Is(err, errorsPkg.ErrInvalidSignature):
 		return fiber.StatusUnauthorized, err.Error()
 	default:
 		return fiber.StatusInternalServerError, "unknown internal error"
