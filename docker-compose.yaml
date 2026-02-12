@@ -1,0 +1,17 @@
+services:
+  redis:
+    image: redis:8.4.1-alpine3.22
+    container_name: arcane_redis
+    ports:
+      - "6379:6379"
+    command: >
+      redis-server 
+      --save 60 1 
+      --loglevel notice 
+      --requirepass ${REDIS_PASSWORD:-abracadabra}
+      --maxmemory 512mb
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 5

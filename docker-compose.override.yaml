@@ -1,0 +1,16 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
+    volumes:
+      - .:/app
+    environment:
+      - DB_PATH=/app/data/arcane.db
+      - REDIS_ADDR=redis:6379
+      - LOG_LEVEL=debug
+    ports:
+      - "5000:5000"
+    depends_on:
+      redis:
+        condition: service_healthy
