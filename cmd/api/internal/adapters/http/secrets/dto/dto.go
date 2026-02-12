@@ -20,16 +20,10 @@ func (req SaveSecretRequest) ToCommand(pubkey, signature string) secrets.SaveCom
 	}
 }
 
-type SaveResponse struct {
-	Error string `json:"error,omitempty"`
-}
-
 type ListUsernamesResponse struct {
-	Error     string   `json:"error,omitempty"`
 	Usernames []string `json:"usernames,omitempty"`
 }
 
 type ListServicesResponse struct {
-	Error    string   `json:"error,omitempty"`
 	Services []string `json:"services,omitempty"`
 }

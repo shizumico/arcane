@@ -19,16 +19,12 @@ func (h *QueryHandlers) ListUsernames(c fiber.Ctx) error {
 	pubkey := middleware.PubKeyFromCtx(c.Context())
 
 	usernames, err := h.useCase.ListUsernames(c.Context(), pubkey)
-	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(dto.ListUsernamesResponse{
-			Error: "database error",
-		})
+	if err == nil {
+		return fiber.NewError(fiber.StatusInternalServerError, "database error")
 	}
 
 	if len(usernames) == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(dto.ListUsernamesResponse{
-			Error: "usernames is empty",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "usernames is empty")
 	}
 
 	return c.Status(fiber.StatusOK).JSON(dto.ListUsernamesResponse{
@@ -42,15 +38,11 @@ func (h *QueryHandlers) ListServices(c fiber.Ctx) error {
 
 	services, err := h.useCase.ListServices(c.Context(), pubkey, username)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(dto.ListServicesResponse{
-			Error: "database error",
-		})
+		return fiber.NewError(fiber.StatusInternalServerError, "database error")
 	}
 
 	if len(services) == 0 {
-		return c.Status(fiber.StatusNotFound).JSON(dto.ListServicesResponse{
-			Error: "services is empty",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "services is empty")
 	}
 
 	return c.Status(fiber.StatusOK).JSON(dto.ListServicesResponse{
@@ -65,15 +57,11 @@ func (h *QueryHandlers) Get(c fiber.Ctx) error {
 
 	secret, err := h.useCase.Get(c.Context(), pubkey, username, service)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": "database error",
-		})
+		return fiber.NewError(fiber.StatusInternalServerError, "database error")
 	}
 
 	if secret.Cipher == "" {
-		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
-			"error": "secret not found",
-		})
+		return fiber.NewError(fiber.StatusNotFound, "secret not found")
 	}
 
 	return c.JSON(secret)

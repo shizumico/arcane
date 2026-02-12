@@ -20,9 +20,7 @@ func (h *CommandHandlers) Challenge(c fiber.Ctx) error {
 
 	challenge, err := h.useCase.CreateChallenge(c.Context(), pubkey)
 	if err != nil {
-		return c.Status(fiber.StatusInternalServerError).JSON(dto.Response{
-			Error: "failed to create challenge",
-		})
+		return fiber.NewError(fiber.StatusInternalServerError, "failed to create challenge")
 	}
 
 	return c.JSON(dto.Response{

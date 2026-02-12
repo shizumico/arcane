@@ -29,29 +29,20 @@ func (h *CommandHandlers) Save(c fiber.Ctx) error {
 
 	signature := c.Get("Signature")
 	if signature == "" {
-		return c.Status(fiber.StatusBadRequest).JSON(dto.SaveResponse{
-			Error: "missing signature header",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "missing signature header")
 	}
 
 	if err := h.challengeUseCase.VerifySignature(c.Context(), pubkey, signature); err != nil {
-		return c.Status(fiber.StatusUnauthorized).JSON(dto.SaveResponse{
-			Error: "failed to verify signature",
-		})
+		return fiber.NewError(fiber.StatusUnauthorized, "failed to verify signature")
 	}
 
 	req := dto.SaveSecretRequest{}
 	if err := json.Unmarshal(c.Body(), &req); err != nil {
-		return c.Status(fiber.StatusBadRequest).JSON(dto.SaveResponse{
-			Error: "invalid json",
-		})
+		return fiber.NewError(fiber.StatusBadRequest, "invalid json")
 	}
 
 	if err := h.useCase.Save(c.Context(), req.ToCommand(pubkey, signature)); err != nil {
-		code, msg := h.mapErrorToStatusCode(err)
-		return c.Status(code).JSON(dto.SaveResponse{
-			Error: msg,
-		})
+		return fiber.NewError(h.mapErrorToStatusCode(err))
 	}
 
 	return c.SendStatus(fiber.StatusCreated)
