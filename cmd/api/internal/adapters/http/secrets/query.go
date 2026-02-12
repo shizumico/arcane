@@ -19,7 +19,7 @@ func (h *QueryHandlers) ListUsernames(c fiber.Ctx) error {
 	pubkey := middleware.PubKeyFromCtx(c.Context())
 
 	usernames, err := h.useCase.ListUsernames(c.Context(), pubkey)
-	if err == nil {
+	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, "database error")
 	}
 
