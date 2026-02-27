@@ -14,11 +14,11 @@ import (
 	secretHandlers "github.com/shizumico/arcane/cmd/api/internal/adapters/http/secrets"
 	"github.com/shizumico/arcane/cmd/api/internal/adapters/repositories/redis"
 	"github.com/shizumico/arcane/cmd/api/internal/adapters/repositories/redis/challenges"
-	"github.com/shizumico/arcane/cmd/api/internal/adapters/repositories/sqlite"
 	"github.com/shizumico/arcane/cmd/api/internal/adapters/repositories/sqlite/secrets"
 	challengesApplication "github.com/shizumico/arcane/cmd/api/internal/core/application/challenges"
 	secretsApplication "github.com/shizumico/arcane/cmd/api/internal/core/application/secrets"
 	"github.com/shizumico/arcane/pkg/logger"
+	"github.com/shizumico/arcane/pkg/sqlite"
 	"go.uber.org/zap"
 )
 
